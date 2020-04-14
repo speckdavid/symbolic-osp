@@ -775,6 +775,7 @@ fast_downward_plugin(
         symbolic/searches/uniform_cost_search
         symbolic/searches/sym_search
         symbolic/searches/top_k_uniform_cost_search
+        symbolic/searches/osp_uniform_cost_search
         symbolic/search_engines/symbolic_search
         symbolic/search_engines/symbolic_uniform_cost_search
         symbolic/search_engines/top_k_symbolic_uniform_cost_search

@@ -8,10 +8,14 @@ class OspSymbolicUniformCostSearch : public SymbolicUniformCostSearch {
 
 protected:
   ADD utility_function;
+  double max_utility;
+  double plan_utility;
 
   virtual void initialize() override;
 
   virtual void initialize_utilitiy_function();
+
+  virtual SearchStatus step() override;
 
 public:
   OspSymbolicUniformCostSearch(const options::Options &opts);
