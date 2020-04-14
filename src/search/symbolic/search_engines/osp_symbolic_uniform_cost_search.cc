@@ -33,7 +33,7 @@ void OspSymbolicUniformCostSearch::initialize() {
 
   plan_data_base->init(vars);
   solution_registry.init(vars, fw_search.get(), bw_search.get(), plan_data_base,
-                         false);
+                         true);
 
   if (fw && bw) {
     search = std::unique_ptr<BidirectionalSearch>(new BidirectionalSearch(
@@ -73,8 +73,8 @@ SearchStatus OspSymbolicUniformCostSearch::step() {
   if (lower_bound >= upper_bound) {
     solution_registry.construct_cheaper_solutions(
         std::numeric_limits<int>::max());
-    cur_status = plan_data_base->get_num_reported_plan() > 0 ? SOLVED : FAILED;
     solution_found = plan_data_base->get_num_reported_plan() > 0;
+    cur_status = solution_found ? SOLVED : FAILED;
   } else {
     // All plans found
     if (std::abs(max_utility - plan_utility) < 0.001) {
@@ -98,7 +98,9 @@ SearchStatus OspSymbolicUniformCostSearch::step() {
   lower_bound_increased = false;
 
   if (cur_status == SOLVED) {
+    std::cout << "Best plan:" << std::endl;
     plan_data_base->dump_first_accepted_plan();
+    std::cout << "Plan utility: " << plan_utility << std::endl;
     return cur_status;
   }
   if (cur_status == FAILED) {
