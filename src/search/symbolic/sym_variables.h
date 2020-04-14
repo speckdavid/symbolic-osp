@@ -91,6 +91,8 @@ public:
     return ax_comp;
   }
 
+  Cudd *get_manager() const { return manager.get(); }
+
   // State getStateFrom(const BDD & bdd) const;
   BDD getStateBDD(const std::vector<int> &state) const;
   BDD getStateBDD(const GlobalState &state) const;

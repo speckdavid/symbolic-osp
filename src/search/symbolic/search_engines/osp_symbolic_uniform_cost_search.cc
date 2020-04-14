@@ -41,6 +41,19 @@ void OspSymbolicUniformCostSearch::initialize() {
   } else {
     search.reset(fw ? fw_search.release() : bw_search.release());
   }
+
+  initialize_utilitiy_function();
+  upper_bound = task->get_plan_bound(); // We use upper bound for plan bound
+}
+
+void OspSymbolicUniformCostSearch::initialize_utilitiy_function() {
+  utility_function = vars->zeroBDD().Add();
+  for (auto &pair : task->get_utilities()) {
+    BDD fact = vars->get_axiom_compiliation()->get_primary_representation(
+        pair.first.var, pair.first.value);
+    ADD value = vars->get_manager()->constant(pair.second);
+    utility_function += (fact.Add() * value);
+  }
 }
 
 OspSymbolicUniformCostSearch::OspSymbolicUniformCostSearch(
@@ -48,11 +61,11 @@ OspSymbolicUniformCostSearch::OspSymbolicUniformCostSearch(
     : SymbolicUniformCostSearch(opts, true, false) {}
 
 void OspSymbolicUniformCostSearch::new_solution(const SymSolutionCut &sol) {
-  std::cout << "new solution" << std::endl;
-  if (!solution_registry.found_all_plans() && sol.get_f() < upper_bound) {
-    solution_registry.register_solution(sol);
-    upper_bound = sol.get_f();
-  }
+  ADD states_utilities = sol.get_cut().Add() * utility_function;
+  double max_value = Cudd_V(states_utilities.FindMax().getNode());
+  BDD max_states = states_utilities.BddThreshold(max_value);
+  SymSolutionCut max_sol = sol;
+  max_sol.set_cut(max_states);
 }
 
 void OspSymbolicUniformCostSearch::add_options_to_parser(OptionParser &parser) {

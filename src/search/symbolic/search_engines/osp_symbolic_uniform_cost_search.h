@@ -7,7 +7,11 @@ namespace symbolic {
 class OspSymbolicUniformCostSearch : public SymbolicUniformCostSearch {
 
 protected:
+  ADD utility_function;
+
   virtual void initialize() override;
+
+  virtual void initialize_utilitiy_function();
 
 public:
   OspSymbolicUniformCostSearch(const options::Options &opts);
