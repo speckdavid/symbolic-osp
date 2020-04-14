@@ -35,7 +35,6 @@ SymbolicSearch::SymbolicSearch(const options::Options &opts)
 
 SearchStatus SymbolicSearch::step() {
   step_num++;
-
   // Handling empty plan
   if (step_num == 0) {
     BDD cut = mgr->getInitialState() * mgr->getGoal();
