@@ -101,6 +101,8 @@ public:
 
   const BDD &getGoal() { return goal; }
 
+  void setGoal(BDD goal) { this->goal = goal; }
+
   const BDD &getInitialState() { return initialState; }
 
   BDD getBDD(int variable, int value) const {
