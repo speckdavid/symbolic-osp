@@ -1,3 +1,9 @@
+# Symbolic Osp Planner
+```console
+$ ./fast-downward.py --translate --search domain.pddl problem.pddl --search "symosp-fw()"
+```
+
+
 # Symbolic Top-k Planner
 Sym-k is a state-of-the-art top-k planner. The objective of top-k planning is to determine a set of k different plans with lowest cost for a given planning task.
 
