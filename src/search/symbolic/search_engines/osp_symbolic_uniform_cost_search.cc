@@ -120,7 +120,7 @@ OspSymbolicUniformCostSearch::OspSymbolicUniformCostSearch(
 
 void OspSymbolicUniformCostSearch::new_solution(const SymSolutionCut &sol) {
 
-  if (sol.get_f() != -1) {
+  if (sol.get_f() != -1 && sol.get_f() < upper_bound) {
     ADD states_utilities = sol.get_cut().Add() * utility_function;
     double max_value = Cudd_V(states_utilities.FindMax().getNode());
 

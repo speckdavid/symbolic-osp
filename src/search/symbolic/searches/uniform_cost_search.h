@@ -27,6 +27,11 @@ namespace symbolic {
  * 4) else (S must have something) => expand_cost()
  *
  * Zero cost operators have been expanded iff !S.IsZero() && Szero.IsZero()
+ *
+ * David: Let S be the current states in forntier. Then image_0(S) = S_0
+ * and image_c(S) = S_c is computed. So zero cost actions and cost actions
+ * are applied at the same time. Next image_0(S_0) = S'_0 nad image_c(S_0) =
+ * S'_c are computed and so on.
  */
 class SymController;
 class ClosedList;
