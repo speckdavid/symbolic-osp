@@ -500,7 +500,14 @@ def translate_task(strips_to_sas, ranges, translation_key,
     for fact, uval in utilities:
         pairs = strips_to_sas.get(fact, [])
         for var, val in pairs:
-            util_values.append((var, val, int(uval)))  
+            util_values.append((var, val, int(uval))) 
+
+    num_added_facts = 0
+    for var, val in goal.pairs:
+        if var not in util_values:
+            util_values.append((var, val, int(0)))
+            num_added_facts += 1
+    print("Added " + str(num_added_facts) +  " goal facts to utility.")
 
     util = sas_tasks.SASUtil(util_values)
 
