@@ -22,9 +22,8 @@ class PlanDataBase;
 class SymVariables;
 
 class SymbolicSearch : public SearchEngine {
+private:
 protected:
-  int step_num;
-
   // Symbolic manager to perform bdd operations
   std::shared_ptr<SymStateSpaceManager> mgr;
 
@@ -35,6 +34,7 @@ protected:
   SymParamsMgr mgrParams; // Parameters for SymStateSpaceManager configuration.
   SymParamsSearch searchParams; // Parameters to search the original state space
 
+  int step_num;
   bool lower_bound_increased;
   int lower_bound; // Lower bound of search (incl. min-action costs)
   int upper_bound; // Upper bound of search (not use by top_k)
@@ -42,6 +42,8 @@ protected:
 
   std::shared_ptr<PlanDataBase> plan_data_base;
   SymSolutionRegistry solution_registry; // Solution registry
+
+  virtual void initialize() override;
 
   virtual SearchStatus step() override;
 
@@ -66,17 +68,6 @@ public:
   virtual void new_solution(const SymSolutionCut &sol);
 
   static void add_options_to_parser(OptionParser &parser);
-};
-
-//////// Specialized
-
-class SymbolicBidirectionalUniformCostSearch : public SymbolicSearch {
-protected:
-  virtual void initialize() override;
-
-public:
-  SymbolicBidirectionalUniformCostSearch(const options::Options &opts);
-  virtual ~SymbolicBidirectionalUniformCostSearch() = default;
 };
 
 } // namespace symbolic

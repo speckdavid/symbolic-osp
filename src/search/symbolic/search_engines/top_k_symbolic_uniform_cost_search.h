@@ -9,13 +9,15 @@ class TopkSymbolicUniformCostSearch : public SymbolicUniformCostSearch {
 protected:
   virtual void initialize() override;
 
+  virtual SearchStatus step() override {
+    return SymbolicUniformCostSearch::step();
+  }
+
 public:
   TopkSymbolicUniformCostSearch(const options::Options &opts, bool fw, bool bw);
   virtual ~TopkSymbolicUniformCostSearch() = default;
 
   virtual void new_solution(const SymSolutionCut &sol) override;
-
-  static void add_options_to_parser(OptionParser &parser);
 };
 
 } // namespace symbolic

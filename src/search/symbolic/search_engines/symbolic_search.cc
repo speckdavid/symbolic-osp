@@ -22,15 +22,20 @@ using namespace options;
 namespace symbolic {
 
 SymbolicSearch::SymbolicSearch(const options::Options &opts)
-    : SearchEngine(opts), step_num(-1), vars(make_shared<SymVariables>(opts)),
-      mgrParams(opts), searchParams(opts), lower_bound_increased(true),
-      lower_bound(0), upper_bound(std::numeric_limits<int>::max()), min_g(0),
+    : SearchEngine(opts), vars(make_shared<SymVariables>(opts)),
+      mgrParams(opts), searchParams(opts), step_num(-1),
+      lower_bound_increased(true), lower_bound(0),
+      upper_bound(std::numeric_limits<int>::max()), min_g(0),
       plan_data_base(opts.get<std::shared_ptr<PlanDataBase>>("plan_selection")),
       solution_registry() {
   mgrParams.print_options();
   searchParams.print_options();
-  plan_data_base->print_options();
   vars->init();
+}
+
+void SymbolicSearch::initialize() {
+  plan_data_base->set_plan_manager(get_plan_manager());
+  plan_data_base->print_options();
 }
 
 SearchStatus SymbolicSearch::step() {

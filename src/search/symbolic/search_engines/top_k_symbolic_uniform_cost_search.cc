@@ -1,4 +1,3 @@
-
 #include "top_k_symbolic_uniform_cost_search.h"
 #include "../../option_parser.h"
 #include "../original_state_space.h"
@@ -11,6 +10,8 @@
 namespace symbolic {
 
 void TopkSymbolicUniformCostSearch::initialize() {
+  SymbolicSearch::initialize();
+
   mgr = std::make_shared<OriginalStateSpace>(vars.get(), mgrParams);
 
   std::unique_ptr<TopkUniformCostSearch> fw_search = nullptr;
@@ -58,16 +59,11 @@ void TopkSymbolicUniformCostSearch::new_solution(const SymSolutionCut &sol) {
   }
 }
 
-void TopkSymbolicUniformCostSearch::add_options_to_parser(
-    OptionParser &parser) {
-  SymbolicUniformCostSearch::add_options_to_parser(parser);
-}
-
 } // namespace symbolic
 
 static std::shared_ptr<SearchEngine> _parse_forward_ucs(OptionParser &parser) {
-  parser.document_synopsis("Symbolic Forward Uniform Cost Search", "");
-  symbolic::SymbolicUniformCostSearch::add_options_to_parser(parser);
+  parser.document_synopsis("Top-k Symbolic Forward Uniform Cost Search", "");
+  symbolic::SymbolicSearch::add_options_to_parser(parser);
   Options opts = parser.parse();
   opts.set("top_k", true);
 
@@ -75,14 +71,15 @@ static std::shared_ptr<SearchEngine> _parse_forward_ucs(OptionParser &parser) {
   if (!parser.dry_run()) {
     engine = std::make_shared<symbolic::TopkSymbolicUniformCostSearch>(
         opts, true, false);
+    std::cout << "Top-k Symbolic Forward Uniform Cost Search" << std::endl;
   }
 
   return engine;
 }
 
 static std::shared_ptr<SearchEngine> _parse_backward_ucs(OptionParser &parser) {
-  parser.document_synopsis("Symbolic Backward Uniform Cost Search", "");
-  symbolic::SymbolicUniformCostSearch::add_options_to_parser(parser);
+  parser.document_synopsis("Top-k Symbolic Backward Uniform Cost Search", "");
+  symbolic::SymbolicSearch::add_options_to_parser(parser);
   Options opts = parser.parse();
   opts.set("top_k", true);
 
@@ -90,6 +87,7 @@ static std::shared_ptr<SearchEngine> _parse_backward_ucs(OptionParser &parser) {
   if (!parser.dry_run()) {
     engine = std::make_shared<symbolic::TopkSymbolicUniformCostSearch>(
         opts, false, true);
+    std::cout << "Top-k Symbolic Backward Uniform Cost Search" << std::endl;
   }
 
   return engine;
@@ -97,8 +95,9 @@ static std::shared_ptr<SearchEngine> _parse_backward_ucs(OptionParser &parser) {
 
 static std::shared_ptr<SearchEngine>
 _parse_bidirectional_ucs(OptionParser &parser) {
-  parser.document_synopsis("Symbolic Bidirectional Uniform Cost Search", "");
-  symbolic::SymbolicUniformCostSearch::add_options_to_parser(parser);
+  parser.document_synopsis("Top-k Symbolic Bidirectional Uniform Cost Search",
+                           "");
+  symbolic::SymbolicSearch::add_options_to_parser(parser);
   Options opts = parser.parse();
   opts.set("top_k", true);
 
@@ -106,6 +105,8 @@ _parse_bidirectional_ucs(OptionParser &parser) {
   if (!parser.dry_run()) {
     engine = std::make_shared<symbolic::TopkSymbolicUniformCostSearch>(
         opts, true, true);
+    std::cout << "Top-k Symbolic Bidirectional Uniform Cost Search"
+              << std::endl;
   }
 
   return engine;

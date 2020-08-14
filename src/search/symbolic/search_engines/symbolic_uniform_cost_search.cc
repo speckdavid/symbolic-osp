@@ -1,4 +1,3 @@
-
 #include "symbolic_uniform_cost_search.h"
 #include "../../option_parser.h"
 #include "../original_state_space.h"
@@ -11,6 +10,7 @@
 namespace symbolic {
 
 void SymbolicUniformCostSearch::initialize() {
+  SymbolicSearch::initialize();
   mgr = std::make_shared<OriginalStateSpace>(vars.get(), mgrParams);
 
   std::unique_ptr<UniformCostSearch> fw_search = nullptr;
@@ -57,21 +57,18 @@ void SymbolicUniformCostSearch::new_solution(const SymSolutionCut &sol) {
   }
 }
 
-void SymbolicUniformCostSearch::add_options_to_parser(OptionParser &parser) {
-  SymbolicSearch::add_options_to_parser(parser);
-}
-
 } // namespace symbolic
 
 static std::shared_ptr<SearchEngine> _parse_forward_ucs(OptionParser &parser) {
   parser.document_synopsis("Symbolic Forward Uniform Cost Search", "");
-  symbolic::SymbolicUniformCostSearch::add_options_to_parser(parser);
+  symbolic::SymbolicSearch::add_options_to_parser(parser);
   Options opts = parser.parse();
 
   std::shared_ptr<symbolic::SymbolicSearch> engine = nullptr;
   if (!parser.dry_run()) {
     engine = std::make_shared<symbolic::SymbolicUniformCostSearch>(opts, true,
                                                                    false);
+    std::cout << "Symbolic Forward Uniform Cost Search" << std::endl;
   }
 
   return engine;
@@ -79,13 +76,14 @@ static std::shared_ptr<SearchEngine> _parse_forward_ucs(OptionParser &parser) {
 
 static std::shared_ptr<SearchEngine> _parse_backward_ucs(OptionParser &parser) {
   parser.document_synopsis("Symbolic Backward Uniform Cost Search", "");
-  symbolic::SymbolicUniformCostSearch::add_options_to_parser(parser);
+  symbolic::SymbolicSearch::add_options_to_parser(parser);
   Options opts = parser.parse();
 
   std::shared_ptr<symbolic::SymbolicSearch> engine = nullptr;
   if (!parser.dry_run()) {
     engine = std::make_shared<symbolic::SymbolicUniformCostSearch>(opts, false,
                                                                    true);
+    std::cout << "Symbolic Backward Uniform Cost Search" << std::endl;
   }
 
   return engine;
@@ -94,13 +92,14 @@ static std::shared_ptr<SearchEngine> _parse_backward_ucs(OptionParser &parser) {
 static std::shared_ptr<SearchEngine>
 _parse_bidirectional_ucs(OptionParser &parser) {
   parser.document_synopsis("Symbolic Bidirectional Uniform Cost Search", "");
-  symbolic::SymbolicUniformCostSearch::add_options_to_parser(parser);
+  symbolic::SymbolicSearch::add_options_to_parser(parser);
   Options opts = parser.parse();
 
   std::shared_ptr<symbolic::SymbolicSearch> engine = nullptr;
   if (!parser.dry_run()) {
     engine =
         std::make_shared<symbolic::SymbolicUniformCostSearch>(opts, true, true);
+    std::cout << "Symbolic Bidirectional Uniform Cost Search" << std::endl;
   }
 
   return engine;
