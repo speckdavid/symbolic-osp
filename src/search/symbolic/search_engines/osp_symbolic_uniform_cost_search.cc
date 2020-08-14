@@ -151,6 +151,7 @@ void OspSymbolicUniformCostSearch::new_solution(const SymSolutionCut &sol) {
         max_sol.set_cut(max_states);
         solution_registry.register_solution(max_sol);
         plan_utility = max_value;
+        std::cout << "[INFO] Best utility: " << plan_utility << std::endl;
       }
     } else {
       double max_value = -1;
@@ -168,9 +169,9 @@ void OspSymbolicUniformCostSearch::new_solution(const SymSolutionCut &sol) {
         max_sol.set_cut(max_states);
         solution_registry.register_solution(max_sol);
         plan_utility = max_value;
+        std::cout << "[INFO] Best utility: " << plan_utility << std::endl;
       }
     }
-    std::cout << "[INFO] Best utility: " << plan_utility << std::endl;
   }
 }
 
