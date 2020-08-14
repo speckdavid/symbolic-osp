@@ -47,14 +47,33 @@ void OspSymbolicUniformCostSearch::initialize() {
 }
 
 void OspSymbolicUniformCostSearch::initialize_utilitiy_function() {
-  utility_function = vars->zeroBDD().Add();
+  std::cout << "Utility function type: " << (use_add ? "ADD" : "BDD")
+            << std::endl;
+
+  add_utility_function = vars->zeroBDD().Add();
   for (auto &pair : task->get_utilities()) {
     BDD fact = vars->get_axiom_compiliation()->get_primary_representation(
         pair.first.var, pair.first.value);
     ADD value = vars->get_manager()->constant(pair.second);
-    utility_function += (fact.Add() * value);
+    add_utility_function += (fact.Add() * value);
   }
-  max_utility = Cudd_V(utility_function.FindMax().getNode());
+  max_utility = Cudd_V(add_utility_function.FindMax().getNode());
+
+  if (!use_add) {
+    ADD cur_add = add_utility_function;
+    double min_value = Cudd_V(cur_add.FindMin().getNode());
+
+    while (cur_add != vars->get_manager()->constant(
+                          std::numeric_limits<double>::infinity())) {
+      // std::cout << min_value << std::endl;
+      bdd_utility_functions[min_value] =
+          cur_add.BddInterval(min_value, min_value);
+      cur_add = cur_add.Maximum(bdd_utility_functions[min_value].Add() *
+                                vars->get_manager()->constant(
+                                    std::numeric_limits<double>::infinity()));
+      min_value = Cudd_V(cur_add.FindMin().getNode());
+    }
+  }
 }
 
 SearchStatus OspSymbolicUniformCostSearch::step() {
@@ -116,28 +135,49 @@ SearchStatus OspSymbolicUniformCostSearch::step() {
 OspSymbolicUniformCostSearch::OspSymbolicUniformCostSearch(
     const options::Options &opts)
     : SymbolicUniformCostSearch(opts, true, false),
-      plan_utility(-std::numeric_limits<double>::infinity()) {}
+      use_add(opts.get<bool>("use_add")),
+      plan_utility(-std::numeric_limits<double>::infinity()),
+      max_utility(-std::numeric_limits<double>::infinity()) {}
 
 void OspSymbolicUniformCostSearch::new_solution(const SymSolutionCut &sol) {
-
   if (sol.get_f() != -1 && sol.get_f() < upper_bound) {
-    ADD states_utilities = sol.get_cut().Add() * utility_function;
-    double max_value = Cudd_V(states_utilities.FindMax().getNode());
 
-    if (max_value > plan_utility) {
-      BDD max_states = states_utilities.BddThreshold(max_value);
-      SymSolutionCut max_sol = sol;
-      max_sol.set_cut(max_states);
-      solution_registry.register_solution(max_sol);
-      plan_utility = max_value;
-
-      std::cout << "[INFO] Best utility: " << plan_utility << std::endl;
+    if (use_add) {
+      ADD states_utilities = sol.get_cut().Add() * add_utility_function;
+      double max_value = Cudd_V(states_utilities.FindMax().getNode());
+      if (max_value > plan_utility) {
+        BDD max_states = states_utilities.BddThreshold(max_value);
+        SymSolutionCut max_sol = sol;
+        max_sol.set_cut(max_states);
+        solution_registry.register_solution(max_sol);
+        plan_utility = max_value;
+      }
+    } else {
+      double max_value = -1;
+      BDD max_states = vars->zeroBDD();
+      for (auto iter = bdd_utility_functions.rbegin();
+           iter != bdd_utility_functions.rend(); ++iter) {
+        max_states = iter->second * sol.get_cut();
+        if (!max_states.IsZero()) {
+          max_value = iter->first;
+          break;
+        }
+      }
+      if (max_value > plan_utility) {
+        SymSolutionCut max_sol = sol;
+        max_sol.set_cut(max_states);
+        solution_registry.register_solution(max_sol);
+        plan_utility = max_value;
+      }
     }
+    std::cout << "[INFO] Best utility: " << plan_utility << std::endl;
   }
 }
 
 void OspSymbolicUniformCostSearch::add_options_to_parser(OptionParser &parser) {
   SymbolicUniformCostSearch::add_options_to_parser(parser);
+  parser.add_option<bool>("use_add", "use utility function decomposition",
+                          "true");
 }
 
 } // namespace symbolic

@@ -7,9 +7,12 @@ namespace symbolic {
 class OspSymbolicUniformCostSearch : public SymbolicUniformCostSearch {
 
 protected:
-  ADD utility_function;
-  double max_utility;
+  bool use_add;
+  ADD add_utility_function;
+  std::map<int, BDD> bdd_utility_functions;
+
   double plan_utility;
+  double max_utility;
 
   virtual void initialize() override;
 
