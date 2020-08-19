@@ -352,6 +352,7 @@ fast_downward_plugin(
     HELP "Eager search algorithm"
     SOURCES
         search_engines/eager_search
+        search_engines/eager_osp_search
     DEPENDS NULL_PRUNING_METHOD ORDERED_SET SUCCESSOR_GENERATOR
     DEPENDENCY_ONLY
 )
@@ -369,6 +370,7 @@ fast_downward_plugin(
     HELP "Eager (i.e., normal) best-first search"
     SOURCES
         search_engines/plugin_eager
+        search_engines/plugin_eager_osp
     DEPENDS EAGER_SEARCH SEARCH_COMMON
 )
 

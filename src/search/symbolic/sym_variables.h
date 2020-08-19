@@ -77,6 +77,7 @@ class SymVariables {
 
 public:
   SymVariables(const options::Options &opts);
+  SymVariables(bool gamer_ordering);
   void init();
 
   std::shared_ptr<StateRegistry> get_state_registry() {

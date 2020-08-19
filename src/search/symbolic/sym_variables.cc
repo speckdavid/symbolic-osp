@@ -28,6 +28,10 @@ SymVariables::SymVariables(const Options &opts)
       cudd_init_available_memory(0L),
       gamer_ordering(opts.get<bool>("gamer_ordering")) {}
 
+SymVariables::SymVariables(bool gamer_ordering)
+    : cudd_init_nodes(16000000L), cudd_init_cache_size(16000000L),
+      cudd_init_available_memory(0L), gamer_ordering(gamer_ordering) {}
+
 void SymVariables::init() {
   vector<int> var_order;
   if (gamer_ordering) {
