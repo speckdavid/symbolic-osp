@@ -145,7 +145,9 @@ void OspSymbolicUniformCostSearch::new_solution(const SymSolutionCut &sol) {
     if (use_add) {
       ADD states_utilities = sol.get_cut().Add() * add_utility_function;
       double max_value = Cudd_V(states_utilities.FindMax().getNode());
-      if (max_value > plan_utility) {
+      if (max_value > plan_utility ||
+          (max_value >= plan_utility &&
+           sol.get_f() < solution_registry.cheapest_solution_cost_found())) {
         BDD max_states = states_utilities.BddThreshold(max_value);
         // If the max_value is 0, we have to cut again with the
         // original BDD to avoid states that are not part of the cut.
@@ -171,7 +173,9 @@ void OspSymbolicUniformCostSearch::new_solution(const SymSolutionCut &sol) {
           break;
         }
       }
-      if (max_value > plan_utility) {
+      if (max_value > plan_utility ||
+          (max_value >= plan_utility &&
+           sol.get_f() < solution_registry.cheapest_solution_cost_found())) {
         SymSolutionCut max_sol = sol;
         max_sol.set_cut(max_states);
         solution_registry.register_solution(max_sol);
