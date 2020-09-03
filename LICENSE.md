@@ -1,4 +1,4 @@
-Sym-k is mainly based on Fast Downward, which is why the following applies.
+Sym-Osp is mainly based on Fast Downward, which is why the following applies.
 
 The following directories are not part of Fast Downward as covered by this
 license:
