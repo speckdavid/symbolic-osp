@@ -1,5 +1,10 @@
 # Symbolic Osp Planner Sym-Osp
 
+Sym-k is a state-of-the-art optimal oversubscription planner based on symbolic search.
+
+Main source:
+ - Speck, D.; Michael Katz. 2021. Symbolic Search for Oversubscription Planning. In Proceedings of the Thirty-Fifth AAAI Conference on Artificial Intelligence (AAAI 2021), AAAI Press. (to appear)
+
 ## Dependencies
 Currently we only support Linux systems. The following should install all necessary dependencies.
 ```console
