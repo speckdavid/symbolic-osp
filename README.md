@@ -6,7 +6,7 @@ Main source:
  - Speck, D.; Michael Katz. 2021. Symbolic Search for Oversubscription Planning. In Proceedings of the Thirty-Fifth AAAI Conference on Artificial Intelligence (AAAI 2021), AAAI Press. (to appear)
 
 ```console
-@InProceedings{speck-et-al-aaai2021,
+@InProceedings{speck-katz-aaai2021,
   author =       "David Speck and Michael Katz",
   title =        "Symbolic Search for Oversubscription Planning",
   booktitle =    "Proceedings of the Thirty-Fifth {AAAI} Conference on
