@@ -10,6 +10,8 @@ protected:
   bool use_add;
   ADD add_utility_function;
   std::map<int, BDD> bdd_utility_functions;
+  utils::Timer bdd_to_add_timer;
+  utils::Timer util_timer;
 
   double plan_utility;
   double max_utility;

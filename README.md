@@ -33,14 +33,14 @@ $ ./build.py
 
 ## Osp Configurations
 
-Sym-Osp uADD representing the utility function as ADD to determine the utility values of sets of states.
+Sym-Osp uBDD representing the utility function as multiple BDDs to determine the utility values of sets of states.
 ```console
 $ ./fast-downward.py --translate --search domain.pddl problem.pddl --search "symosp-fw()"
 ```
 
-Sym-Osp uBDD representing the utility function as multiple BDDs to determine the utility values of sets of states.
+Sym-Osp uADD representing the utility function as ADD to determine the utility values of sets of states.
 ```console
-$ ./fast-downward.py --translate --search domain.pddl problem.pddl --search "symosp-fw(use_add=false)"
+$ ./fast-downward.py --translate --search domain.pddl problem.pddl --search "symosp-fw(use_add=true)"
 ```
 
 Explicit A\* search with the blind heuristic, representing the utility function as an ADD to determine the utility values of a single state.
@@ -49,6 +49,6 @@ $ ./fast-downward.py --translate --search domain.pddl problem.pddl --search "eag
 ```
 
 ## Based on:
- - Fast Downward: http://www.fast-downward.org/
- - Symbolic Fast Downward: https://fai.cs.uni-saarland.de/torralba/software.html
  - Symbolic Top-k: https://github.com/speckdavid/symk
+ - Symbolic Fast Downward: https://fai.cs.uni-saarland.de/torralba/software.html
+ - Fast Downward: http://www.fast-downward.org/

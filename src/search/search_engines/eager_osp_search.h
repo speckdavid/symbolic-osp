@@ -28,6 +28,7 @@ protected:
 
   virtual void initialize() override;
   virtual SearchStatus step() override;
+  virtual std::pair<SearchNode, bool> fetch_next_node() override;
 
 public:
   explicit EagerOspSearch(const options::Options &opts);

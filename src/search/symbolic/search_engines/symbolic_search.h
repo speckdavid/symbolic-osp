@@ -42,7 +42,7 @@ protected:
 
   std::shared_ptr<PlanDataBase> plan_data_base;
   SymSolutionRegistry solution_registry; // Solution registry
-
+  
   virtual void initialize() override;
 
   virtual SearchStatus step() override;

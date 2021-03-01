@@ -28,6 +28,7 @@ SymbolicSearch::SymbolicSearch(const options::Options &opts)
       upper_bound(std::numeric_limits<int>::max()), min_g(0),
       plan_data_base(opts.get<std::shared_ptr<PlanDataBase>>("plan_selection")),
       solution_registry() {
+  save_plans = false; // we handle plans seperat
   mgrParams.print_options();
   searchParams.print_options();
   vars->init();
@@ -116,7 +117,5 @@ void SymbolicSearch::add_options_to_parser(OptionParser &parser) {
   SymParamsSearch::add_options_to_parser(parser, 30e3, 10e7);
   SymParamsMgr::add_options_to_parser(parser);
   PlanDataBase::add_options_to_parser(parser);
-  parser.add_option<std::shared_ptr<PlanDataBase>>(
-      "plan_selection", "plan selection strategy", "top_k(1)");
 }
 } // namespace symbolic

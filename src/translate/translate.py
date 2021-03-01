@@ -1,5 +1,4 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
+#! /usr/bin/env python3
 
 from __future__ import print_function
 
@@ -8,11 +7,10 @@ import sys
 import traceback
 
 def python_version_supported():
-    major, minor = sys.version_info[:2]
-    return (major == 2 and minor >= 7) or (major, minor) >= (3, 2)
+    return sys.version_info >= (3, 6)
 
 if not python_version_supported():
-    sys.exit("Error: Translator only supports Python >= 2.7 and Python >= 3.2.")
+    sys.exit("Error: Translator only supports Python >= 3.6.")
 
 
 from collections import defaultdict
