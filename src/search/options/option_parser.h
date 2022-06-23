@@ -9,6 +9,7 @@
 #include "../utils/math.h"
 #include "../utils/strings.h"
 
+#include <limits>
 #include <memory>
 #include <sstream>
 #include <string>
