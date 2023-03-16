@@ -13,7 +13,7 @@ Main source:
                   Artificial Intelligence ({AAAI} 2021)",
   publisher =    "{AAAI} Press",
   year =         "2021",
-  note =         "to appear"
+  pages =        "11972--11980"
 }
 ```
 
@@ -47,6 +47,9 @@ Explicit A\* search with the blind heuristic, representing the utility function 
 ```console
 $ ./fast-downward.py --translate --search domain.pddl problem.pddl --search "eager_osp(single(g()), f_eval=g(),reopen_closed=true)"
 ```
+
+## Benchmarks
+Benchmarks for oversubscription planning can be found [here](https://doi.org/10.5281/zenodo.2576024).
 
 ## Based on:
  - Symbolic Top-k: https://github.com/speckdavid/symk
